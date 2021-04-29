@@ -1,29 +1,89 @@
 <template>
-  <div id="app">
-    <SimpleForm />
+  <div class="form">
+    <h1>Create an event</h1>
+    <form @submit.prevent="sendForm">
+      <BaseSelect
+        :options="categories"
+        v-model="event.category"
+        label="Select a category"
+      />
+
+      <h3>Name & describe your event</h3>
+
+      <BaseInput v-model="event.title" label="Title" type="text" />
+      <BaseInput v-model="event.description" label="Description" type="text" />
+      <h3>Where is your event?</h3>
+      <BaseInput v-model="event.location" label="Location" type="text" />
+
+      <h3>Are pets allowed?</h3>
+      <div>
+        <BaseRadioGroup
+          v-model="event.pets"
+          name="pets"
+          :options="petOptions"
+        />
+      </div>
+
+      <h3>Extras</h3>
+      <div>
+        <BaseCheckbox v-model="event.extras.catering" label="Catering" />
+      </div>
+
+      <div>
+        <BaseCheckbox v-model="event.extras.music" label="Live music" />
+      </div>
+
+      <button class="button -fill-gradient" type="submit">Submit</button>
+    </form>
   </div>
 </template>
 
 <script>
-import SimpleForm from "@/views/SimpleForm";
+import BaseInput from "@/components/BaseInput.vue";
+import BaseSelect from "@/components/BaseSelect.vue";
+import axios from "axios";
 export default {
-  components: { SimpleForm },
+  components: {
+    BaseInput,
+    BaseSelect,
+  },
+  data() {
+    return {
+      categories: [
+        "sustainability",
+        "nature",
+        "animal welfare",
+        "housing",
+        "education",
+        "food",
+        "community",
+      ],
+      event: {
+        category: "",
+        title: "",
+        description: "",
+        location: "",
+        pets: 1,
+        extras: {
+          catering: false,
+          music: false,
+        },
+      },
+      petOptions: [
+        { label: "Yes", value: 1 },
+        { label: "No", value: 0 },
+      ],
+    };
+  },
+  methods: {
+    sendForm() {
+      axios.post();
+    },
+  },
 };
 </script>
-
-<style>
-html {
-  -webkit-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-body {
-  margin: 0;
-  font-family: "Open Sans", sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-}
-#app {
+<style scoped>
+#form {
   box-sizing: border-box;
   width: 500px;
   padding: 0 20px 20px;
