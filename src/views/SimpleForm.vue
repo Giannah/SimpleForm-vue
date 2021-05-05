@@ -8,30 +8,50 @@
         label="Select a category"
       />
 
-      <h3>Name & describe your event</h3>
+      <fieldset>
+        <legend>Name & describe your event</legend>
 
-      <BaseInput v-model="event.title" label="Title" type="text" />
-      <BaseInput v-model="event.description" label="Description" type="text" />
-      <h3>Where is your event?</h3>
-      <BaseInput v-model="event.location" label="Location" type="text" />
-
-      <h3>Are pets allowed?</h3>
-      <div>
-        <BaseRadioGroup
-          v-model="event.pets"
-          name="pets"
-          :options="petOptions"
+        <BaseInput
+          v-model="event.title"
+          label="Title"
+          type="text"
+          error="This input has an error !"
         />
-      </div>
+        <BaseInput
+          v-model="event.description"
+          label="Description"
+          type="text"
+        />
+      </fieldset>
 
-      <h3>Extras</h3>
-      <div>
-        <BaseCheckbox v-model="event.extras.catering" label="Catering" />
-      </div>
+      <fieldset>
+        <legend>Where is your event?</legend>
+        <BaseInput v-model="event.location" label="Location" type="text" />
+      </fieldset>
+      <fieldset>
+        <legend>Pets</legend>
 
-      <div>
-        <BaseCheckbox v-model="event.extras.music" label="Live music" />
-      </div>
+        <p>Are pets allowed ?</p>
+
+        <div>
+          <BaseRadioGroup
+            v-model="event.pets"
+            name="pets"
+            :options="petOptions"
+          />
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Extras</legend>
+        <div>
+          <BaseCheckbox v-model="event.extras.catering" label="Catering" />
+        </div>
+
+        <div>
+          <BaseCheckbox v-model="event.extras.music" label="Live music" />
+        </div>
+      </fieldset>
 
       <button class="button -fill-gradient" type="submit">Submit</button>
     </form>
@@ -77,7 +97,17 @@ export default {
   },
   methods: {
     sendForm() {
-      axios.post();
+      axios
+        .post(
+          "https://my-json-server.typicode.com/Giannah/SimpleForm-vue/events",
+          this.event
+        )
+        .then((response) => {
+          console.log("Here the response :", response);
+        })
+        .catch((error) => {
+          console.log("Oups there is an error :", error);
+        });
     },
   },
 };
@@ -88,6 +118,16 @@ export default {
   width: 500px;
   padding: 0 20px 20px;
   margin: 0 auto;
+}
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+legend {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 20px;
 }
 hr {
   box-sizing: content-box;
